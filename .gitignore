@@ -1,0 +1,10 @@
+.devcontainer/
+.vscode/
+
+dist/
+node_modules/
+**/.generated
+
+compose.override.yaml
+
+core.*
