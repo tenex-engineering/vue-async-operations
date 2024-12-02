@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { define } from '#app/utils/define.js'
+import { define } from '@txe/define-x'
 import { reactive } from 'vue'
 
 type Status = 'idle' | 'pending' | 'fulfilled' | 'rejected'

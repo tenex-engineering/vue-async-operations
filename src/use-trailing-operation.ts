@@ -1,5 +1,5 @@
 import { readonly } from 'vue'
-import { useOperationState } from '#app/modules/use-operation-state.js'
+import { useOperationState } from './use-operation-state.js'
 
 export function useTrailingOperation<
   F extends (...args: never[]) => Promise<Awaited<ReturnType<F>>>,
