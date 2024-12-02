@@ -1,10 +1,12 @@
-.devcontainer/
-.vscode/
-
 dist/
+coverage/
 node_modules/
-**/.generated
 
 compose.override.yaml
+
+.devcontainer
+.vscode
+
+.DS_Store
 
 core.*
