@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+    inputs:
+      command:
+        required: true
+        type: string
+
+jobs:
+  base-x:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+
+      - uses: actions/cache/restore@v4
+        with:
+          fail-on-cache-miss: true
+          path: node_modules/
+          key: ${{ runner.os }}-node-${{ github.sha }}
+
+      - run: ${{ inputs.command }}
