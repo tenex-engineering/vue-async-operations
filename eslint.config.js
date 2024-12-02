@@ -1,45 +1,51 @@
-// @ts-check
-
 import eslintConfigPrettier from 'eslint-config-prettier'
 // @ts-expect-error https://github.com/import-js/eslint-plugin-import/issues/3090
 import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginJs from '@eslint/js'
+import eslintPluginStylistic from '@stylistic/eslint-plugin'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import eslintPluginX from '@txe/eslint-plugin-x'
-import eslintStylisticJs from '@stylistic/eslint-plugin-js'
-import eslintToolingTs from 'typescript-eslint'
-import { fileURLToPath } from 'node:url'
+import * as eslintToolingTs from 'typescript-eslint'
 import globals from 'globals'
-import { includeIgnoreFile } from '@eslint/compat'
-import path from 'node:path'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const gitignorePath = path.resolve(__dirname, '.gitignore')
-
-/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigArray} */
-export default [
-  includeIgnoreFile(gitignorePath),
-
+export default eslintToolingTs.config(
   eslintPluginJs.configs.recommended,
   {
     rules: {
       'object-shorthand': ['warn', 'properties'],
-      'no-useless-rename': ['warn'],
+      'no-restricted-syntax': [
+        'warn',
+        { selector: 'TSEnumDeclaration', message: 'Avoid enums' },
+      ],
     },
   },
 
-  // eslint-disable-next-line import/no-named-as-default-member
   ...eslintToolingTs.configs.strict,
-  // eslint-disable-next-line import/no-named-as-default-member
   ...eslintToolingTs.configs.stylistic,
   {
     rules: {
-      'no-restricted-syntax': [
+      '@typescript-eslint/parameter-properties': 'warn',
+    },
+  },
+
+  eslintPluginImport.flatConfigs.recommended,
+  eslintPluginImport.flatConfigs.typescript,
+  {
+    settings: {
+      'import/resolver': {
+        typescript: true,
+      },
+    },
+    rules: {
+      'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
+      'import/first': 'error',
+      'import/no-duplicates': 'off',
+      'import/no-empty-named-blocks': 'warn',
+      'import/newline-after-import': 'warn',
+      'import/no-extraneous-dependencies': [
         'error',
-        { selector: 'TSEnumDeclaration', message: 'Avoid enums' },
+        { devDependencies: ['*', 'src/**/*.spec.*'] },
       ],
-      '@typescript-eslint/parameter-properties': 'error',
     },
   },
 
@@ -57,36 +63,13 @@ export default [
 
   {
     plugins: {
-      x: eslintPluginX,
+      // @ts-expect-error https://github.com/eslint-stylistic/eslint-stylistic/issues/398
+      '@stylistic': eslintPluginStylistic,
     },
     rules: {
-      'x/organize-imports': 'warn',
-    },
-  },
-
-  eslintPluginImport.flatConfigs.recommended,
-  eslintPluginImport.flatConfigs.typescript,
-  {
-    settings: {
-      'import/resolver': {
-        typescript: true,
-        node: true,
-      },
-    },
-    rules: {
-      'import/no-duplicates': 'off',
-      'import/no-empty-named-blocks': 'warn',
-      'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
-    },
-  },
-
-  {
-    plugins: {
-      '@stylistic/js': eslintStylisticJs,
-    },
-    rules: {
-      '@stylistic/js/padding-line-between-statements': [
+      '@stylistic/padding-line-between-statements': [
         'warn',
+        { blankLine: 'never', prev: 'import', next: 'import' },
         { blankLine: 'always', prev: '*', next: 'block-like' },
         { blankLine: 'always', prev: 'block-like', next: '*' },
         { blankLine: 'always', prev: ['case', 'default'], next: '*' },
@@ -95,5 +78,17 @@ export default [
     },
   },
 
+  {
+    files: ['*'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
   eslintConfigPrettier,
-]
+  ...eslintPluginX.configs.recommended,
+
+  {
+    ignores: ['dist/', 'coverage/'],
+  },
+)

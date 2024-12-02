@@ -1,35 +1,11 @@
 {
-  "include": ["src/**/*"],
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-
-    "paths": {
-      "#app/*": ["./src/*"]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.test.json"
     },
-
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "ES2022",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-
-    // Strictness
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-
-    // Transpilation
-    "module": "Node16",
-    "outDir": "dist",
-    "declaration": true,
-
-    // Enable latest ES and DOM features
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-
-    // Ensure color and formatting when compiler output is piped, e.g. through Docker
-    "pretty": true
-  }
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
