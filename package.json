@@ -5,6 +5,7 @@
     "ci": "npm run build && npm run test && npm run lint && npm run check-exports && npm run check-format && npm run check-spelling",
     "dev": "concurrently --names=\"tsc,test\" --prefix-colors=\"cyan,green\" \"npm run watch:build\" \"npm run watch:test\"",
     "build": "tsc --project tsconfig.build.json",
+    "bundle": "npm run build && npx vite build && npm run build -- --declaration --emitDeclarationOnly",
     "test": "vitest run --coverage",
     "lint": "eslint ./",
     "check-format": "prettier --check ./",
