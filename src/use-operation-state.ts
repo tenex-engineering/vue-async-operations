@@ -8,7 +8,7 @@ export function useOperationState<
   F extends (...args: never[]) => Promise<unknown>,
 >() {
   const _ = reactive({
-    status: define<Status>('pending'),
+    status: define<Status>('idle'),
     result: define<Awaited<ReturnType<F>> | undefined>(undefined),
     error: define<unknown>(undefined),
     isIdle: computed((): boolean => _.status === 'idle' || _.isSettled),
