@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 import { test } from 'vitest'
-import { useTrailingOperation } from './index.js'
+import { useTrailingOperation } from './trailing.js'
 
 test('fulfilled', async () => {
   const [query, operation] = useTrailingOperation(async (name: string) => {

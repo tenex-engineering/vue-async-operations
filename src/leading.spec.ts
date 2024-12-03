@@ -1,6 +1,6 @@
 import { expect } from 'vitest'
 import { test } from 'vitest'
-import { useLeadingOperation } from './index.js'
+import { useLeadingOperation } from './leading.js'
 
 test('fulfilled', async () => {
   const [submit, submission] = useLeadingOperation(async (name: string) => {

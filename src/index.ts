@@ -1,2 +1,2 @@
-export { useLeadingOperation } from './use-leading-operation/index.js'
-export { useTrailingOperation } from './use-trailing-operation/index.js'
+export { useLeadingOperation } from './leading.js'
+export { useTrailingOperation } from './trailing.js'
