@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { reactive } from 'vue'
 
-export function useOperationState<T>(): State<T> {
-  const _: StateDefaults = reactive({
+export function useOperationState<T>(): StateDefaults<T> {
+  const _: StateDefaults<T> = reactive({
     status: 'initial',
     result: undefined,
     error: undefined,
@@ -13,12 +13,12 @@ export function useOperationState<T>(): State<T> {
     isSettled: computed(() => _.isFulfilled || _.isRejected),
   })
 
-  return _ as State<T>
+  return _
 }
 
-interface StateDefaults {
+interface StateDefaults<T = unknown> {
   status: 'initial' | 'pending' | 'fulfilled' | 'rejected',
-  result: unknown | undefined,
+  result: T | undefined,
   error: unknown | undefined,
   isInitial: boolean,
   isPending: boolean,
@@ -36,7 +36,7 @@ type StateVariant<
   [P in keyof T]: T[P]
 }
 
-type State<T> = (
+export type State<T> = (
   | StateVariant<{
     status: 'initial' | 'pending',
     result: undefined,

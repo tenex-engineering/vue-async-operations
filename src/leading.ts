@@ -1,4 +1,5 @@
 import { readonly } from 'vue'
+import type { State } from './state.js'
 import { useOperationState } from './state.js'
 
 export function useLeadingOperation<
@@ -8,7 +9,7 @@ export function useLeadingOperation<
   fn: F,
 ): [
     (...args: Parameters<F>) => Promise<T>,
-    ReturnType<typeof readonly<ReturnType<typeof useOperationState<T>>>>,
+    ReturnType<typeof readonly<State<T>>>,
   ] {
   const _ = useOperationState<T>()
 
@@ -40,5 +41,5 @@ export function useLeadingOperation<
     return result
   }
 
-  return [_fn, readonly(_)]
+  return [_fn, readonly(_ as State<T>)]
 }
