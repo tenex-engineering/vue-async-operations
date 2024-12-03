@@ -8,6 +8,7 @@ export default mergeConfig(
     test: {
       coverage: {
         include: ['src/*'],
+        exclude: ['src/index.ts'],
       },
     },
   }),
