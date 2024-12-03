@@ -37,8 +37,7 @@ test('rejected', async () => {
 
   try {
     await query()
-  }
-  catch (error: unknown) {
+  } catch (error: unknown) {
     expect(operation.status).toBe('rejected')
     expect(operation.result).toBe(undefined)
     expect(operation.error).toBe(error)
@@ -48,16 +47,15 @@ test('rejected', async () => {
 test('concurrent', async () => {
   const [deferred, resolve] = useDeferredPromise()
 
-  const [query, operation] = useTrailingOperation(async (
-    name: string,
-    option?: { subsequent: true },
-  ) => {
-    if (option?.subsequent !== true) {
-      await deferred
-    }
+  const [query, operation] = useTrailingOperation(
+    async (name: string, option?: { subsequent: true }) => {
+      if (option?.subsequent !== true) {
+        await deferred
+      }
 
-    return `hello, ${name}!`
-  })
+      return `hello, ${name}!`
+    },
+  )
 
   query('friend')
   await query('buddy', { subsequent: true })

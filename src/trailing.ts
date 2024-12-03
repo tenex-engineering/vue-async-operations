@@ -1,5 +1,5 @@
 import { readonly } from 'vue'
-import type { State } from './state.js'
+import type { State } from './state.types.js'
 import { useOperationState } from './state.js'
 
 export function useTrailingOperation<
@@ -8,9 +8,9 @@ export function useTrailingOperation<
 >(
   fn: F,
 ): [
-    (...args: Parameters<F>) => Promise<T>,
-    ReturnType<typeof readonly<State<T>>>,
-  ] {
+  (...args: Parameters<F>) => Promise<T>,
+  ReturnType<typeof readonly<State<T>>>,
+] {
   const _ = useOperationState<T>()
   let trailingPromise
 
@@ -26,8 +26,7 @@ export function useTrailingOperation<
 
     try {
       result = await promise
-    }
-    catch (error) {
+    } catch (error) {
       if (trailingPromise === promise) {
         _.error = error
         _.status = 'rejected'

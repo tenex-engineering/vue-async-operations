@@ -1,5 +1,5 @@
 import { readonly } from 'vue'
-import type { State } from './state.js'
+import type { State } from './state.types.js'
 import { useOperationState } from './state.js'
 
 export function useLeadingOperation<
@@ -8,9 +8,9 @@ export function useLeadingOperation<
 >(
   fn: F,
 ): [
-    (...args: Parameters<F>) => Promise<T>,
-    ReturnType<typeof readonly<State<T>>>,
-  ] {
+  (...args: Parameters<F>) => Promise<T>,
+  ReturnType<typeof readonly<State<T>>>,
+] {
   const _ = useOperationState<T>()
 
   async function _fn(...args: never[]): Promise<T> {
@@ -26,8 +26,7 @@ export function useLeadingOperation<
 
     try {
       result = await fn(...args)
-    }
-    catch (error) {
+    } catch (error) {
       _.error = error
       _.status = 'rejected'
 

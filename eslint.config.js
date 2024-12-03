@@ -1,3 +1,4 @@
+import eslintConfigPrettier from 'eslint-config-prettier'
 // @ts-expect-error https://github.com/import-js/eslint-plugin-import/issues/3090
 import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginJs from '@eslint/js'
@@ -67,17 +68,12 @@ export default eslintToolingTs.config(
     },
   },
 
-  // @ts-expect-error someone in the future, please
-  eslintPluginStylistic.configs.customize({
-    arrowParens: true,
-  }),
   {
     plugins: {
-      // https://github.com/eslint-stylistic/eslint-stylistic/issues/398
+      // @ts-expect-error https://github.com/eslint-stylistic/eslint-stylistic/issues/398
       '@stylistic': eslintPluginStylistic,
     },
     rules: {
-      '@stylistic/max-len': ['warn', { ignoreComments: true }],
       '@stylistic/member-delimiter-style': [
         'warn',
         {
@@ -98,6 +94,7 @@ export default eslintToolingTs.config(
     },
   },
 
+  eslintConfigPrettier,
   ...eslintPluginX.configs.recommended,
 
   {
