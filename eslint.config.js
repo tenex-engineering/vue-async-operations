@@ -1,4 +1,3 @@
-import eslintConfigPrettier from 'eslint-config-prettier'
 // @ts-expect-error https://github.com/import-js/eslint-plugin-import/issues/3090
 import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginJs from '@eslint/js'
@@ -9,6 +8,13 @@ import * as eslintToolingTs from 'typescript-eslint'
 import globals from 'globals'
 
 export default eslintToolingTs.config(
+  {
+    files: ['*'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
   eslintPluginJs.configs.recommended,
   {
     rules: {
@@ -61,12 +67,25 @@ export default eslintToolingTs.config(
     },
   },
 
+  // @ts-expect-error someone in the future, please
+  eslintPluginStylistic.configs.customize({
+    arrowParens: true,
+  }),
   {
     plugins: {
-      // @ts-expect-error https://github.com/eslint-stylistic/eslint-stylistic/issues/398
+      // https://github.com/eslint-stylistic/eslint-stylistic/issues/398
       '@stylistic': eslintPluginStylistic,
     },
     rules: {
+      '@stylistic/member-delimiter-style': [
+        'warn',
+        {
+          multiline: {
+            delimiter: 'comma',
+            requireLast: true,
+          },
+        },
+      ],
       '@stylistic/padding-line-between-statements': [
         'warn',
         { blankLine: 'never', prev: 'import', next: 'import' },
@@ -78,14 +97,6 @@ export default eslintToolingTs.config(
     },
   },
 
-  {
-    files: ['*'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-
-  eslintConfigPrettier,
   ...eslintPluginX.configs.recommended,
 
   {
