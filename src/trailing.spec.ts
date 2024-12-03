@@ -1,10 +1,13 @@
 import { expect } from 'vitest'
 import { test } from 'vitest'
+import { useDeferredPromise } from './testing/deferred-promise.js'
 import { useTrailingOperation } from './trailing.js'
 
 test('fulfilled', async () => {
+  const [deferred, resolve] = useDeferredPromise()
+
   const [query, operation] = useTrailingOperation(async (name: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await deferred
 
     return `hello, ${name}!`
   })
@@ -17,6 +20,7 @@ test('fulfilled', async () => {
 
   expect(operation.status).toBe('pending')
 
+  resolve()
   await promise
 
   expect(operation.status).toBe('fulfilled')
@@ -42,14 +46,23 @@ test('rejected', async () => {
 })
 
 test('concurrent', async () => {
-  const [query, operation] = useTrailingOperation(async (name: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+  const [deferred, resolve] = useDeferredPromise()
+
+  const [query, operation] = useTrailingOperation(async (
+    name: string,
+    option?: { subsequent: true },
+  ) => {
+    if (option?.subsequent !== true) {
+      await deferred
+    }
 
     return `hello, ${name}!`
   })
 
   query('friend')
-  await query('buddy')
+  await query('buddy', { subsequent: true })
 
   expect(operation.result).toBe('hello, buddy!')
+
+  resolve()
 })
