@@ -77,6 +77,7 @@ export default eslintToolingTs.config(
       '@stylistic': eslintPluginStylistic,
     },
     rules: {
+      '@stylistic/max-len': ['warn', { ignoreComments: true }],
       '@stylistic/member-delimiter-style': [
         'warn',
         {
