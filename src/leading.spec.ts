@@ -9,7 +9,7 @@ test('fulfilled', async () => {
     return `hello, ${name}!`
   })
 
-  expect(submission.status).toBe('idle')
+  expect(submission.status).toBe('initial')
   expect(submission.result).toBe(undefined)
   expect(submission.error).toBe(undefined)
 
@@ -33,7 +33,8 @@ test('rejected', async () => {
 
   try {
     await submit()
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     expect(submission.status).toBe('rejected')
     expect(submission.result).toBe(undefined)
     expect(submission.error).toBe(error)

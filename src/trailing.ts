@@ -2,17 +2,18 @@ import { readonly } from 'vue'
 import { useOperationState } from './state.js'
 
 export function useTrailingOperation<
-  F extends (...args: never[]) => Promise<Awaited<ReturnType<F>>>,
+  F extends (...args: never[]) => Promise<T>,
+  T = Awaited<ReturnType<F>>,
 >(
   fn: F,
 ): [
-  (...args: Parameters<F>) => Promise<Awaited<ReturnType<F>>>,
-  ReturnType<typeof readonly<ReturnType<typeof useOperationState<F>>>>,
-] {
-  const _ = useOperationState<F>()
+    (...args: Parameters<F>) => Promise<T>,
+    ReturnType<typeof readonly<ReturnType<typeof useOperationState<T>>>>,
+  ] {
+  const _ = useOperationState<T>()
   let trailingPromise
 
-  async function _fn(...args: never[]): Promise<Awaited<ReturnType<F>>> {
+  async function _fn(...args: never[]): Promise<T> {
     _.status = 'pending'
     _.result = undefined
     _.error = undefined
@@ -24,7 +25,8 @@ export function useTrailingOperation<
 
     try {
       result = await promise
-    } catch (error) {
+    }
+    catch (error) {
       if (trailingPromise === promise) {
         _.error = error
         _.status = 'rejected'

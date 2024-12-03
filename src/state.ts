@@ -1,22 +1,67 @@
 import { computed } from 'vue'
-import { define } from '@txe/define-x'
 import { reactive } from 'vue'
 
-type Status = 'idle' | 'pending' | 'fulfilled' | 'rejected'
-
-export function useOperationState<
-  F extends (...args: never[]) => Promise<unknown>,
->() {
-  const _ = reactive({
-    status: define<Status>('idle'),
-    result: define<Awaited<ReturnType<F>> | undefined>(undefined),
-    error: define<unknown>(undefined),
-    isIdle: computed((): boolean => _.status === 'idle' || _.isSettled),
-    isPending: computed((): boolean => _.status === 'pending'),
-    isFulfilled: computed((): boolean => _.status === 'fulfilled'),
-    isRejected: computed((): boolean => _.status === 'rejected'),
-    isSettled: computed((): boolean => _.isFulfilled || _.isRejected),
+export function useOperationState<T>(): State<T> {
+  const _: StateDefaults = reactive({
+    status: 'initial',
+    result: undefined,
+    error: undefined,
+    isInitial: computed(() => _.status === 'initial'),
+    isPending: computed(() => _.status === 'pending'),
+    isFulfilled: computed(() => _.status === 'fulfilled'),
+    isRejected: computed(() => _.status === 'rejected'),
+    isSettled: computed(() => _.isFulfilled || _.isRejected),
   })
 
-  return _
+  return _ as State<T>
 }
+
+interface StateDefaults {
+  status: 'initial' | 'pending' | 'fulfilled' | 'rejected',
+  result: unknown | undefined,
+  error: unknown | undefined,
+  isInitial: boolean,
+  isPending: boolean,
+  isFulfilled: boolean,
+  isRejected: boolean,
+  isSettled: boolean,
+}
+
+type StateVariant<
+  T extends {
+    [P in keyof U]?: U[P]
+  },
+  U = StateDefaults,
+> = U & {
+  [P in keyof T]: T[P]
+}
+
+type State<T> = (
+  | StateVariant<{
+    status: 'initial' | 'pending',
+    result: undefined,
+    error: undefined,
+  }>
+  | StateVariant<{
+    status: 'fulfilled',
+    result: T,
+    error: undefined,
+  }>
+  | StateVariant<{
+    status: 'rejected',
+    result: undefined,
+    error: unknown,
+  }>
+)
+& (
+  | StateVariant<{
+    isFulfilled: true,
+    result: T,
+    error: undefined,
+  }>
+  | StateVariant<{
+    isFulfilled: false,
+    result: undefined,
+    error: unknown,
+  }>
+)

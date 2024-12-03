@@ -9,7 +9,7 @@ test('fulfilled', async () => {
     return `hello, ${name}!`
   })
 
-  expect(operation.status).toBe('idle')
+  expect(operation.status).toBe('initial')
   expect(operation.result).toBe(undefined)
   expect(operation.error).toBe(undefined)
 
@@ -33,7 +33,8 @@ test('rejected', async () => {
 
   try {
     await query()
-  } catch (error: unknown) {
+  }
+  catch (error: unknown) {
     expect(operation.status).toBe('rejected')
     expect(operation.result).toBe(undefined)
     expect(operation.error).toBe(error)
