@@ -28,7 +28,7 @@ test('rejected', async () => {
   const [query, operation] = useTrailingOperation(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0))
 
-    throw Error('deliberate')
+    throw Error('deliberately')
   })
 
   try {
