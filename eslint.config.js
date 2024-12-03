@@ -68,12 +68,18 @@ export default eslintToolingTs.config(
     },
   },
 
+  // @ts-expect-error somebody in the future, please
+  eslintPluginStylistic.configs.customize({
+    arrowParens: true,
+    braceStyle: '1tbs',
+  }),
   {
     plugins: {
-      // @ts-expect-error https://github.com/eslint-stylistic/eslint-stylistic/issues/398
+      // https://github.com/eslint-stylistic/eslint-stylistic/issues/398
       '@stylistic': eslintPluginStylistic,
     },
     rules: {
+      '@stylistic/indent': ['off'],
       '@stylistic/member-delimiter-style': [
         'warn',
         {
@@ -91,6 +97,17 @@ export default eslintToolingTs.config(
         { blankLine: 'always', prev: ['case', 'default'], next: '*' },
         { blankLine: 'always', prev: '*', next: 'return' },
       ],
+    },
+  },
+
+  {
+    files: ['src/**/*.types.ts'],
+    plugins: {
+      // https://github.com/eslint-stylistic/eslint-stylistic/issues/398
+      '@stylistic': eslintPluginStylistic,
+    },
+    rules: {
+      '@stylistic/indent': ['warn'],
     },
   },
 
