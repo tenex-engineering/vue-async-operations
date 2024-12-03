@@ -32,8 +32,8 @@ jobs:
           path: node_modules/
           key: ${{ runner.os }}-node-${{ github.sha }}
 
-  bundle:
-    name: Bundle
+  build:
+    name: Build
     needs: [deps]
     runs-on: ubuntu-latest
     steps:
@@ -49,16 +49,16 @@ jobs:
           path: node_modules/
           key: ${{ runner.os }}-node-${{ github.sha }}
 
-      - run: npm run bundle
+      - run: npm run build
 
       - uses: actions/cache/save@v4
         with:
           path: dist/
-          key: ${{ runner.os }}-bundle-${{ github.sha }}
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
   check-exports:
     name: Check exports
-    needs: [deps, bundle]
+    needs: [deps, build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -74,12 +74,12 @@ jobs:
           path: node_modules/
           key: ${{ runner.os }}-node-${{ github.sha }}
 
-      - name: Restore bundle from cache
+      - name: Restore build from cache
         uses: actions/cache/restore@v4
         with:
           fail-on-cache-miss: true
           path: dist/
-          key: ${{ runner.os }}-bundle-${{ github.sha }}
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - run: npm run check-exports
 
@@ -114,7 +114,7 @@ jobs:
   deploy:
     name: Publish
     runs-on: ubuntu-latest
-    needs: [bundle, test, lint]
+    needs: [build, test, lint]
     steps:
       - uses: actions/checkout@v4
 
@@ -127,7 +127,7 @@ jobs:
         with:
           fail-on-cache-miss: true
           path: dist/
-          key: ${{ runner.os }}-bundle-${{ github.sha }}
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - run: npm pkg delete scripts devDependencies
 
