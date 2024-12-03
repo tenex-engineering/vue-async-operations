@@ -1216,11 +1216,6 @@
     estraverse "^5.3.0"
     picomatch "^4.0.2"
 
-"@txe/define-x@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@txe/define-x/-/define-x-0.3.0.tgz#93b73d718518711447683b6eaf44d1a658208978"
-  integrity sha512-2RD1zDtmmhquycIloOXqVHbLweIVB/NdYbzN7kQE87vkjBN9Ex9OxLCRy2LQiD8X3YqTAO93n7vsDOkrhxvrIQ==
-
 "@txe/eslint-plugin-x@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@txe/eslint-plugin-x/-/eslint-plugin-x-0.1.0.tgz#f6b29854ba6b80427fc300954781266f37b799b1"
