@@ -56,7 +56,7 @@ jobs:
           path: dist/
           key: ${{ runner.os }}-build-${{ github.sha }}
 
-  check-exports:
+  exports-check:
     name: Check exports
     needs: [deps, build]
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
           path: dist/
           key: ${{ runner.os }}-build-${{ github.sha }}
 
-      - run: npm run check-exports
+      - run: npm run exports-check
 
   test:
     name: Test
@@ -97,24 +97,24 @@ jobs:
     with:
       command: npm run lint
 
-  check-format:
+  format-check:
     name: Check format
     needs: [deps]
     uses: ./.github/workflows/base-x.yml
     with:
-      command: npm run check-format
+      command: npm run format-check
 
-  check-spelling:
+  spelling-check:
     name: Check spelling
     needs: [deps]
     uses: ./.github/workflows/base-x.yml
     with:
-      command: npm run check-spelling
+      command: npm run spelling-check
 
   deploy:
     name: Publish
     runs-on: ubuntu-latest
-    needs: [build, test, lint]
+    needs: [build, test, lint, exports-check]
     steps:
       - uses: actions/checkout@v4
 

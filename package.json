@@ -2,10 +2,11 @@
   "name": "@txe/vue-async-operations",
   "version": "0.1.0",
   "scripts": {
-    "ci": "npm run build && npm run test && npm run lint && npm run format-check && npm run spelling-check",
+    "ci": "npm run build && npm run test && npm run lint && npm run exports-check && npm run format-check && npm run spelling-check",
     "dev": "concurrently --names=\"tsc,test\" --prefix-colors=\"cyan,green\" \"npm run type-check--watch\" \"npm run test--watch\"",
     "build": "tsc --project tsconfig.build.json",
-    "type-check--watch": "tsc --build --noEmit --watch --preserveWatchOutput",
+    "type-check": "tsc --build --noEmit",
+    "type-check--watch": "npm run type-check --watch --preserveWatchOutput",
     "test": "vitest run --coverage",
     "test--watch": "vitest --coverage --clearScreen=false",
     "lint": "eslint ./",
