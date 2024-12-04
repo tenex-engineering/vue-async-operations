@@ -1,7 +1,7 @@
 export interface StateDefaults<T = unknown> {
   status: 'initial' | 'pending' | 'fulfilled' | 'rejected',
   result: T | undefined,
-  error: unknown | undefined,
+  error: unknown | null | undefined,
   isInitial: boolean,
   isPending: boolean,
   isFulfilled: boolean,
@@ -10,13 +10,11 @@ export interface StateDefaults<T = unknown> {
 }
 
 type StateVariant<
-  T extends {
-    [P in keyof U]?: U[P]
-  },
+  T extends Partial<U>,
   U = StateDefaults,
-> = U & {
-  [P in keyof T]: T[P]
-}
+> = {
+  [P in keyof T]: P extends keyof U ? T[P] : never
+} & U
 
 export type State<T> = (
   | StateVariant<{
@@ -27,7 +25,7 @@ export type State<T> = (
   | StateVariant<{
     status: 'fulfilled',
     result: T,
-    error: undefined,
+    error: null,
   }>
   | StateVariant<{
     status: 'rejected',
@@ -39,7 +37,7 @@ export type State<T> = (
   | StateVariant<{
     isFulfilled: true,
     result: T,
-    error: undefined,
+    error: null,
   }>
   | StateVariant<{
     isFulfilled: false,

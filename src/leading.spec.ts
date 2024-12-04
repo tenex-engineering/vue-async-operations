@@ -1,13 +1,13 @@
+import { createDeferredPromise } from './testing/deferred-promise.js'
 import { expect } from 'vitest'
 import { test } from 'vitest'
-import { useDeferredPromise } from './testing/deferred-promise.js'
 import { useLeadingOperation } from './leading.js'
 
 test('fulfilled', async () => {
-  const [deferred, resolve] = useDeferredPromise()
+  const deferred = createDeferredPromise()
 
   const [submit, submission] = useLeadingOperation(async (name: string) => {
-    await deferred
+    await deferred.promise
 
     return `hello, ${name}!`
   })
@@ -20,7 +20,7 @@ test('fulfilled', async () => {
 
   expect(submission.status).toBe('pending')
 
-  resolve()
+  deferred.resolve()
   await promise
 
   expect(submission.status).toBe('fulfilled')
@@ -45,15 +45,15 @@ test('rejected', async () => {
 })
 
 test('concurrent', async () => {
-  const [deferred, resolve] = useDeferredPromise()
+  const deferred = createDeferredPromise()
 
   const [submit] = useLeadingOperation(async () => {
-    await deferred
+    await deferred.promise
   })
 
   submit()
 
   await expect(submit).rejects.toThrowError()
 
-  resolve()
+  deferred.resolve()
 })

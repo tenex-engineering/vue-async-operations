@@ -1,13 +1,27 @@
-export function useDeferredPromise() {
-  type Args = Parameters<ConstructorParameters<typeof Promise<void>>[0]>
+type ExecArgs = Parameters<ConstructorParameters<typeof Promise<void>>[0]>
 
-  let resolve!: Args[0]
-  let reject!: Args[1]
+export function useDeferredPromise(): [
+  Promise<unknown>,
+  ExecArgs[0],
+  ExecArgs[1],
+] {
+  let resolve!: ExecArgs[0]
+  let reject!: ExecArgs[1]
 
-  const deferred = new Promise<void>((...args) => {
+  const promise = new Promise((...args) => {
     resolve = args[0]
     reject = args[1]
   })
 
-  return [deferred, resolve, reject] satisfies [Promise<void>, Args[0], Args[1]]
+  return [promise, resolve, reject]
+}
+
+export function createDeferredPromise(): {
+  promise: Promise<unknown>
+  resolve: ExecArgs[0]
+  reject: ExecArgs[1]
+} {
+  const [promise, resolve, reject] = useDeferredPromise()
+
+  return { promise, resolve, reject }
 }
