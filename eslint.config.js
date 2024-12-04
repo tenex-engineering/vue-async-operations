@@ -80,15 +80,6 @@ export default eslintToolingTs.config(
     },
     rules: {
       '@stylistic/indent': ['off'],
-      '@stylistic/member-delimiter-style': [
-        'warn',
-        {
-          multiline: {
-            delimiter: 'comma',
-            requireLast: true,
-          },
-        },
-      ],
       '@stylistic/padding-line-between-statements': [
         'warn',
         { blankLine: 'never', prev: 'import', next: 'import' },
@@ -108,6 +99,19 @@ export default eslintToolingTs.config(
     },
     rules: {
       '@stylistic/indent': ['warn'],
+      '@stylistic/member-delimiter-style': [
+        'warn',
+        {
+          singleline: {
+            delimiter: 'comma',
+            requireLast: false,
+          },
+          multiline: {
+            delimiter: 'comma',
+            requireLast: true,
+          },
+        },
+      ],
     },
   },
 
