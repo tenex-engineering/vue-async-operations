@@ -3,25 +3,41 @@ import { test } from 'vitest'
 import { useDeferredPromise } from './testing/deferred-promise.js'
 import { useTrailingOperation } from './trailing.js'
 
-test('fulfilled', async () => {
-  const [deferred, resolve] = useDeferredPromise()
-
-  const [query, operation] = useTrailingOperation(async (name: string) => {
-    await deferred
-
-    return `hello, ${name}!`
+test('initial', async () => {
+  const [query, operation] = useTrailingOperation(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
   })
 
   expect(operation.status).toBe('initial')
   expect(operation.result).toBe(undefined)
   expect(operation.error).toBe(undefined)
 
-  const promise = query('friend')
+  await query()
+})
+
+test('pending', async () => {
+  const [deferred, resolve] = useDeferredPromise()
+
+  const [query, operation] = useTrailingOperation(async () => {
+    await deferred
+  })
+
+  const promise = query()
 
   expect(operation.status).toBe('pending')
 
   resolve()
   await promise
+})
+
+test('fulfilled', async () => {
+  const [query, operation] = useTrailingOperation(async (name: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    return `hello, ${name}!`
+  })
+
+  await query('friend')
 
   expect(operation.status).toBe('fulfilled')
   expect(operation.result).toBe('hello, friend!')
@@ -46,19 +62,23 @@ test('rejected', async () => {
 
 test('concurrent', async () => {
   const [deferred, resolve] = useDeferredPromise()
+  let first = true
 
-  const [query, operation] = useTrailingOperation(
-    async (name: string, option?: { subsequent: true }) => {
-      if (option?.subsequent !== true) {
-        await deferred
-      }
+  const [query, operation] = useTrailingOperation(async (name: string) => {
+    if (first) {
+      first = false
+      await deferred
 
-      return `hello, ${name}!`
-    },
-  )
+      return
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    return `hello, ${name}!`
+  })
 
   query('friend')
-  await query('buddy', { subsequent: true })
+  await query('buddy')
 
   expect(operation.result).toBe('hello, buddy!')
 

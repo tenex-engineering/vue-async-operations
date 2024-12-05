@@ -3,25 +3,41 @@ import { expect } from 'vitest'
 import { test } from 'vitest'
 import { useLeadingOperation } from './leading.js'
 
-test('fulfilled', async () => {
-  const deferred = createDeferredPromise()
-
-  const [submit, submission] = useLeadingOperation(async (name: string) => {
-    await deferred.promise
-
-    return `hello, ${name}!`
+test('initial', async () => {
+  const [submit, submission] = useLeadingOperation(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
   })
 
   expect(submission.status).toBe('initial')
   expect(submission.result).toBe(undefined)
   expect(submission.error).toBe(undefined)
 
-  const promise = submit('friend')
+  await submit()
+})
+
+test('pending', async () => {
+  const deferred = createDeferredPromise()
+
+  const [submit, submission] = useLeadingOperation(async () => {
+    await deferred.promise
+  })
+
+  const promise = submit()
 
   expect(submission.status).toBe('pending')
 
   deferred.resolve()
   await promise
+})
+
+test('fulfilled', async () => {
+  const [submit, submission] = useLeadingOperation(async (name: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    return `hello, ${name}!`
+  })
+
+  await submit('friend')
 
   expect(submission.status).toBe('fulfilled')
   expect(submission.result).toBe('hello, friend!')
