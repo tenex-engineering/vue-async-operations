@@ -16,7 +16,7 @@ concurrency:
 jobs:
   deps:
     name: Install dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -35,7 +35,7 @@ jobs:
   build:
     name: Build
     needs: [deps]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -59,7 +59,7 @@ jobs:
   exports-check:
     name: Check exports
     needs: [deps, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -113,7 +113,7 @@ jobs:
 
   deploy:
     name: Publish
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [build, test, lint, exports-check]
     steps:
       - uses: actions/checkout@v4
