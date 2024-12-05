@@ -1,6 +1,5 @@
 import { computed } from 'vue'
 import { reactive } from 'vue'
-import type { StateDefaults } from './state.types.js'
 
 export function useOperationState<T>(): StateDefaults<T> {
   const _: StateDefaults<T> = reactive({
@@ -15,4 +14,15 @@ export function useOperationState<T>(): StateDefaults<T> {
   })
 
   return _
+}
+
+export interface StateDefaults<T = unknown> {
+  status: 'initial' | 'pending' | 'fulfilled' | 'rejected'
+  result: T | undefined
+  error: unknown | null | undefined
+  isInitial: boolean
+  isPending: boolean
+  isFulfilled: boolean
+  isRejected: boolean
+  isSettled: boolean
 }

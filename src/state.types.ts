@@ -1,13 +1,4 @@
-export interface StateDefaults<T = unknown> {
-  status: 'initial' | 'pending' | 'fulfilled' | 'rejected',
-  result: T | undefined,
-  error: unknown | null | undefined,
-  isInitial: boolean,
-  isPending: boolean,
-  isFulfilled: boolean,
-  isRejected: boolean,
-  isSettled: boolean,
-}
+import type { StateDefaults } from './state.js'
 
 type StateVariant<
   T extends Partial<U>,
@@ -18,17 +9,26 @@ type StateVariant<
 
 export type State<T> = (
   | StateVariant<{
-    status: 'initial' | 'pending',
+    status: 'initial',
+    isInitial: true,
+    result: undefined,
+    error: undefined,
+  }>
+  | StateVariant<{
+    status: 'pending',
+    isPending: true,
     result: undefined,
     error: undefined,
   }>
   | StateVariant<{
     status: 'fulfilled',
+    isFulfilled: true,
     result: T,
     error: null,
   }>
   | StateVariant<{
     status: 'rejected',
+    isRejected: true,
     result: undefined,
     error: unknown,
   }>
