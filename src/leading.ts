@@ -15,7 +15,9 @@ export function useLeadingOperation<
 
   async function _fn(...args: never[]): Promise<T> {
     if (_.status === 'pending') {
-      throw Error('Cannot invoke operation while the leading one is pending')
+      throw new LeadingOperationError(
+        'Cannot invoke operation while the leading one is pending',
+      )
     }
 
     _.status = 'pending'
@@ -41,3 +43,5 @@ export function useLeadingOperation<
 
   return [_fn, readonly(_ as State<T>)]
 }
+
+export class LeadingOperationError extends Error {}

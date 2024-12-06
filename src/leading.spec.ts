@@ -1,5 +1,6 @@
 import { createDeferredPromise } from './testing/deferred-promise.js'
 import { expect } from 'vitest'
+import { LeadingOperationError } from './leading.js'
 import { test } from 'vitest'
 import { useLeadingOperation } from './leading.js'
 
@@ -69,7 +70,7 @@ test('concurrent', async () => {
 
   submit()
 
-  await expect(submit).rejects.toThrowError()
+  await expect(submit).rejects.toThrowError(LeadingOperationError)
 
   deferred.resolve()
 })
