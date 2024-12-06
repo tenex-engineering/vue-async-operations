@@ -7,42 +7,44 @@ type StateVariant<
   [P in keyof T]: P extends keyof U ? T[P] : never
 } & U
 
-export type State<T> = (
+export type State<T> =
   | StateVariant<{
     status: 'initial',
-    isInitial: true,
     result: undefined,
     error: undefined,
+    isInitial: true,
+    isPending: false,
+    isFulfilled: false,
+    isRejected: false,
+    isSettled: false,
   }>
   | StateVariant<{
     status: 'pending',
-    isPending: true,
     result: undefined,
     error: undefined,
+    isInitial: false,
+    isPending: true,
+    isFulfilled: false,
+    isRejected: false,
+    isSettled: false,
   }>
   | StateVariant<{
     status: 'fulfilled',
-    isFulfilled: true,
     result: T,
-    error: null,
+    error: undefined,
+    isInitial: false,
+    isPending: false,
+    isFulfilled: true,
+    isRejected: false,
+    isSettled: true,
   }>
   | StateVariant<{
     status: 'rejected',
-    isRejected: true,
     result: undefined,
     error: unknown,
-  }>
-) & (
-  | StateVariant<{
-    isFulfilled: true,
-    status: 'fulfilled',
-    result: T,
-    error: null,
-  }>
-  | StateVariant<{
+    isInitial: false,
+    isPending: false,
     isFulfilled: false,
-    status: Exclude<StateDefaults['status'], 'fulfilled'>,
-    result: undefined,
-    error: unknown,
+    isRejected: true,
+    isSettled: true,
   }>
-)

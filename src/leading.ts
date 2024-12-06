@@ -34,7 +34,6 @@ export function useLeadingOperation<
     }
 
     _.result = result
-    _.error = null
     _.status = 'fulfilled'
 
     return result

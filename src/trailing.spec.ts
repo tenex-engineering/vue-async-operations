@@ -41,7 +41,7 @@ test('fulfilled', async () => {
 
   expect(operation.status).toBe('fulfilled')
   expect(operation.result).toBe('hello, friend!')
-  expect(operation.error).toBe(null)
+  expect(operation.error).toBe(undefined)
 })
 
 test('rejected', async () => {

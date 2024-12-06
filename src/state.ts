@@ -19,7 +19,7 @@ export function useOperationState<T>(): StateDefaults<T> {
 export interface StateDefaults<T = unknown> {
   status: 'initial' | 'pending' | 'fulfilled' | 'rejected'
   result: T | undefined
-  error: unknown | null | undefined
+  error: unknown | undefined
   isInitial: boolean
   isPending: boolean
   isFulfilled: boolean

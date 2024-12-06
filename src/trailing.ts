@@ -37,7 +37,6 @@ export function useTrailingOperation<
 
     if (trailingPromise === promise) {
       _.result = result
-      _.error = null
       _.status = 'fulfilled'
     }
 
