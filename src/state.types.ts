@@ -32,15 +32,16 @@ export type State<T> = (
     result: undefined,
     error: unknown,
   }>
-)
-& (
+) & (
   | StateVariant<{
     isFulfilled: true,
+    status: 'fulfilled',
     result: T,
     error: null,
   }>
   | StateVariant<{
     isFulfilled: false,
+    status: Exclude<StateDefaults['status'], 'fulfilled'>,
     result: undefined,
     error: unknown,
   }>
