@@ -1,11 +1,6 @@
 import type { StateDefaults } from './state.js'
 
-type StateVariant<
-  T extends Partial<U>,
-  U = StateDefaults,
-> = {
-  [P in keyof T]: P extends keyof U ? T[P] : never
-} & U
+type StateVariant<T extends U, U = StateDefaults> = Pick<T, keyof U>
 
 export type State<T> =
   | StateVariant<{
