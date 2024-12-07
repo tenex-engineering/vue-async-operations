@@ -1,10 +1,9 @@
 import type { StateDefaults } from './state.js'
 
-type StateVariant<T extends U, U = StateDefaults> = Pick<T, keyof U>
+type StateVariant<T extends U, U = Omit<StateDefaults, 'status'>> = Pick<T, keyof U>
 
 export type State<T> =
   | StateVariant<{
-    status: 'initial',
     result: undefined,
     error: undefined,
     isInitial: true,
@@ -14,7 +13,6 @@ export type State<T> =
     isSettled: false,
   }>
   | StateVariant<{
-    status: 'pending',
     result: undefined,
     error: undefined,
     isInitial: false,
@@ -24,7 +22,6 @@ export type State<T> =
     isSettled: false,
   }>
   | StateVariant<{
-    status: 'fulfilled',
     result: T,
     error: undefined,
     isInitial: false,
@@ -34,7 +31,6 @@ export type State<T> =
     isSettled: true,
   }>
   | StateVariant<{
-    status: 'rejected',
     result: undefined,
     error: unknown,
     isInitial: false,

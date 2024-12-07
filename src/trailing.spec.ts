@@ -4,15 +4,17 @@ import { useDeferredPromise } from './testing/deferred-promise.js'
 import { useTrailingOperation } from './trailing.js'
 
 test('initial', async () => {
-  const [query, operation] = useTrailingOperation(async () => {
+  const [, operation] = useTrailingOperation(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0))
   })
 
-  expect(operation.status).toBe('initial')
   expect(operation.result).toBe(undefined)
   expect(operation.error).toBe(undefined)
-
-  await query()
+  expect(operation.isInitial).toBe(true)
+  expect(operation.isPending).toBe(false)
+  expect(operation.isFulfilled).toBe(false)
+  expect(operation.isRejected).toBe(false)
+  expect(operation.isSettled).toBe(false)
 })
 
 test('pending', async () => {
@@ -24,7 +26,13 @@ test('pending', async () => {
 
   const promise = query()
 
-  expect(operation.status).toBe('pending')
+  expect(operation.result).toBe(undefined)
+  expect(operation.error).toBe(undefined)
+  expect(operation.isInitial).toBe(false)
+  expect(operation.isPending).toBe(true)
+  expect(operation.isFulfilled).toBe(false)
+  expect(operation.isRejected).toBe(false)
+  expect(operation.isSettled).toBe(false)
 
   resolve()
   await promise
@@ -39,9 +47,13 @@ test('fulfilled', async () => {
 
   await query('friend')
 
-  expect(operation.status).toBe('fulfilled')
   expect(operation.result).toBe('hello, friend!')
   expect(operation.error).toBe(undefined)
+  expect(operation.isInitial).toBe(false)
+  expect(operation.isPending).toBe(false)
+  expect(operation.isFulfilled).toBe(true)
+  expect(operation.isRejected).toBe(false)
+  expect(operation.isSettled).toBe(true)
 })
 
 test('rejected', async () => {
@@ -54,33 +66,32 @@ test('rejected', async () => {
   try {
     await query()
   } catch (error: unknown) {
-    expect(operation.status).toBe('rejected')
     expect(operation.result).toBe(undefined)
     expect(operation.error).toBe(error)
+    expect(operation.isInitial).toBe(false)
+    expect(operation.isPending).toBe(false)
+    expect(operation.isFulfilled).toBe(false)
+    expect(operation.isRejected).toBe(true)
+    expect(operation.isSettled).toBe(true)
   }
 })
 
 test('concurrent', async () => {
   const [deferred, resolve] = useDeferredPromise()
-  let first = true
 
-  const [query, operation] = useTrailingOperation(async (name: string) => {
-    if (first) {
-      first = false
-      await deferred
+  const [query, operation] = useTrailingOperation(
+    async (name: string, fn?: () => Promise<void>) => {
+      await fn?.()
 
-      return
-    }
+      return `hello, ${name}!`
+    },
+  )
 
-    await new Promise((resolve) => setTimeout(resolve, 0))
-
-    return `hello, ${name}!`
+  query('friend', async () => {
+    await deferred
   })
-
-  query('friend')
   await query('buddy')
+  resolve()
 
   expect(operation.result).toBe('hello, buddy!')
-
-  resolve()
 })

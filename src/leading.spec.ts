@@ -5,15 +5,17 @@ import { test } from 'vitest'
 import { useLeadingOperation } from './leading.js'
 
 test('initial', async () => {
-  const [submit, submission] = useLeadingOperation(async () => {
+  const [, submission] = useLeadingOperation(async () => {
     await new Promise((resolve) => setTimeout(resolve, 0))
   })
 
-  expect(submission.status).toBe('initial')
   expect(submission.result).toBe(undefined)
   expect(submission.error).toBe(undefined)
-
-  await submit()
+  expect(submission.isInitial).toBe(true)
+  expect(submission.isPending).toBe(false)
+  expect(submission.isFulfilled).toBe(false)
+  expect(submission.isRejected).toBe(false)
+  expect(submission.isSettled).toBe(false)
 })
 
 test('pending', async () => {
@@ -25,7 +27,13 @@ test('pending', async () => {
 
   const promise = submit()
 
-  expect(submission.status).toBe('pending')
+  expect(submission.result).toBe(undefined)
+  expect(submission.error).toBe(undefined)
+  expect(submission.isInitial).toBe(false)
+  expect(submission.isPending).toBe(true)
+  expect(submission.isFulfilled).toBe(false)
+  expect(submission.isRejected).toBe(false)
+  expect(submission.isSettled).toBe(false)
 
   deferred.resolve()
   await promise
@@ -40,9 +48,13 @@ test('fulfilled', async () => {
 
   await submit('friend')
 
-  expect(submission.status).toBe('fulfilled')
   expect(submission.result).toBe('hello, friend!')
   expect(submission.error).toBe(undefined)
+  expect(submission.isInitial).toBe(false)
+  expect(submission.isPending).toBe(false)
+  expect(submission.isFulfilled).toBe(true)
+  expect(submission.isRejected).toBe(false)
+  expect(submission.isSettled).toBe(true)
 })
 
 test('rejected', async () => {
@@ -54,23 +66,34 @@ test('rejected', async () => {
 
   try {
     await submit()
-  } catch (error: unknown) {
-    expect(submission.status).toBe('rejected')
+  } catch (error) {
     expect(submission.result).toBe(undefined)
     expect(submission.error).toBe(error)
+    expect(submission.isInitial).toBe(false)
+    expect(submission.isPending).toBe(false)
+    expect(submission.isFulfilled).toBe(false)
+    expect(submission.isRejected).toBe(true)
+    expect(submission.isSettled).toBe(true)
   }
 })
 
 test('concurrent', async () => {
   const deferred = createDeferredPromise()
 
-  const [submit] = useLeadingOperation(async () => {
+  const [submit, submission] = useLeadingOperation(async (name: string) => {
     await deferred.promise
+
+    return `hello, ${name}!`
   })
 
-  submit()
+  const promise = submit('friend')
 
-  await expect(submit).rejects.toThrowError(LeadingOperationError)
+  await expect(() => submit('buddy')).rejects.toThrowError(
+    LeadingOperationError,
+  )
 
   deferred.resolve()
+  await promise
+
+  expect(submission.result).toBe('hello, friend!')
 })
