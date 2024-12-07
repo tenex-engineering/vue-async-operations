@@ -1,9 +1,13 @@
 import eslintConfigPrettier from 'eslint-config-prettier'
+// import eslintConfigPrettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+// import eslintConfigVueTs from '@vue/eslint-config-typescript'
 // @ts-expect-error https://github.com/import-js/eslint-plugin-import/issues/3090
 import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginJs from '@eslint/js'
 import eslintPluginStylistic from '@stylistic/eslint-plugin'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslintPluginVitest from '@vitest/eslint-plugin'
+// import eslintPluginVue from 'eslint-plugin-vue'
 import eslintPluginX from '@txe/eslint-plugin-x'
 import * as eslintToolingTs from 'typescript-eslint'
 import globals from 'globals'
@@ -115,8 +119,22 @@ export default eslintToolingTs.config(
     },
   },
 
+  {
+    files: ['src/**/*.spec.*'],
+    ...eslintPluginVitest.configs.recommended,
+  },
+
   eslintConfigPrettier,
   ...eslintPluginX.configs.recommended,
+
+  // {
+  //   files: ['**/*.vue'],
+  //   extends: [
+  //     ...eslintPluginVue.configs['flat/recommended'],
+  //     ...eslintConfigVueTs(),
+  //     eslintConfigPrettierSkipFormatting,
+  //   ],
+  // },
 
   {
     ignores: ['dist/', 'coverage/'],
