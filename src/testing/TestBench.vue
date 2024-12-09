@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { State } from '../state.types'
+import type { OperationState } from '../state.types'
 
 const { operation } = defineProps<{
-  operation: State<unknown>
+  operation: OperationState<unknown>
 }>()
 
 function isError(value: unknown): value is Error {

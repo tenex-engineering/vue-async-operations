@@ -1,17 +1,12 @@
-import { readonly } from 'vue'
-import type { State } from './state.types.js'
-import { useOperationState } from './state.js'
+import { createDefaultState } from './state.js'
+import type { OperationState } from './state.types.js'
+import { publishOperationState } from './state.js'
 
 export function useTrailingOperation<
   F extends (...args: never[]) => Promise<T>,
   T = Awaited<ReturnType<F>>,
->(
-  fn: F,
-): [
-  (...args: Parameters<F>) => Promise<T>,
-  ReturnType<typeof readonly<State<T>>>,
-] {
-  const _ = useOperationState<T>()
+>(fn: F): [(...args: Parameters<F>) => Promise<T>, OperationState<T>] {
+  const _ = createDefaultState<T>()
   let trailingPromise
 
   async function _fn(...args: never[]): Promise<T> {
@@ -43,5 +38,5 @@ export function useTrailingOperation<
     return result
   }
 
-  return [_fn, readonly(_ as State<T>)]
+  return [_fn, publishOperationState(_) as OperationState<T>]
 }
