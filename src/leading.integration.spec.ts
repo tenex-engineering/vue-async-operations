@@ -2,7 +2,7 @@ import { createDeferredPromise } from './testing/deferred-promise.js'
 import { expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { test } from 'vitest'
-import TestBench from './testing/TestBench.vue'
+import TestBench from './fixtures/TestBench.vue'
 import { useLeadingOperation } from './leading.js'
 
 const selector = '[data-testid=operation]'

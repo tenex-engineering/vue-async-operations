@@ -13,6 +13,7 @@ export default mergeConfig(
         include: ['src/*'],
         exclude: [
           'src/index.ts',
+          'src/fixtures/**/*',
           'src/testing/**/*',
           'src/**/*.spec.*',
           'src/**/*.types.ts',
