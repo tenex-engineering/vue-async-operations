@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { OperationState } from '../state.types'
+import type { OperationState } from '../state'
 
 const { operation } = defineProps<{
   operation: OperationState<unknown>

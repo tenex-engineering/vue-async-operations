@@ -1,5 +1,5 @@
 import { createDefaultState } from './state.js'
-import type { OperationState } from './state.types.js'
+import type { OperationState } from './state.js'
 import { publishState } from './state.js'
 
 /**

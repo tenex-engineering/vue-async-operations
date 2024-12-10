@@ -84,6 +84,7 @@ export default eslintToolingTs.config(
     },
     rules: {
       '@stylistic/indent': ['off'],
+      '@stylistic/indent-binary-ops': ['off'],
       '@stylistic/padding-line-between-statements': [
         'warn',
         { blankLine: 'never', prev: 'import', next: 'import' },
