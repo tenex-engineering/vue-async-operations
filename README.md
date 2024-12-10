@@ -1,6 +1,6 @@
 # `vue-async-operations`
 
-Vue composables to help you work with async operations.
+Streamlined async operations for Vue.
 
 ## Installation
 

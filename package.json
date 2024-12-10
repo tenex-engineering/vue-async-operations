@@ -16,7 +16,7 @@
     "exports-check": "attw --pack --ignore-rules=cjs-resolves-to-esm ./",
     "spelling-check": "cspell ./"
   },
-  "description": "Vue composables to help you work with async operations.",
+  "description": "Streamlined async operations for Vue.",
   "license": "MIT",
   "author": "Chabib N. R. <cnr@tenex.engineering> (https://tenex.engineering)",
   "homepage": "https://github.com/tenex-engineering/vue-async-operations/blob/master/README.md",
