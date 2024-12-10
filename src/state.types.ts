@@ -1,9 +1,9 @@
 import type { DefaultState } from './state.js'
-import type { publishOperationState } from './state.js'
+import type { publishState } from './state.js'
 
 type StateVariant<
   T extends U,
-  U = Omit<ReturnType<typeof publishOperationState>, 'result' | 'error'> &
+  U = Omit<ReturnType<typeof publishState>, 'result' | 'error'> &
   Omit<DefaultState, 'status'>,
 > = Readonly<Pick<T, keyof U>>
 

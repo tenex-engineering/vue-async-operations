@@ -20,7 +20,7 @@ export function createDefaultState<T>() {
   return _
 }
 
-export function publishOperationState<T, U extends DefaultState<T>>($: U) {
+export function publishState<T, U extends DefaultState<T>>($: U) {
   const _ = readonly({
     result: computed(() => $.result),
     error: computed(() => $.error),

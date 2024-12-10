@@ -1,6 +1,6 @@
 import { createDefaultState } from './state.js'
 import type { OperationState } from './state.types.js'
-import { publishOperationState } from './state.js'
+import { publishState } from './state.js'
 
 export function useLeadingOperation<
   F extends (...args: never[]) => Promise<T>,
@@ -36,7 +36,7 @@ export function useLeadingOperation<
     return result
   }
 
-  return [_fn, publishOperationState(_) as OperationState<T>]
+  return [_fn, publishState(_) as OperationState<T>]
 }
 
 export class LeadingOperationError extends Error {}
