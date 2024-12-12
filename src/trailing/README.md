@@ -1,17 +1,8 @@
-# @txe/vue-async-operations
+# useTrailingOperation
 
-Streamlined async operations for Vue.
-
-## Installation
-
-Available as `@txe/vue-async-operations` via your preferred Node.js package manager.
-
-## Features
-
-| Function                                       | Description                                                     |
-| ---------------------------------------------- | --------------------------------------------------------------- |
-| [useLeadingOperation](src/leading/README.md)   | Prevents new async operations while one is already in progress. |
-| [useTrailingOperation](src/trailing/README.md) | Ignores previous async operations and tracks only the latest.   |
+Wraps an asynchronous function to ensure that only the result of the most recent invocation
+is tracked and reflected in the returned state. Even if earlier invocations are still pending,
+their results are ignored once a new invocation starts.
 
 ## Example
 
