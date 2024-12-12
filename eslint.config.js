@@ -1,23 +1,25 @@
-import eslintConfigPrettier from 'eslint-config-prettier'
-// import eslintConfigPrettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
-// import eslintConfigVueTs from '@vue/eslint-config-typescript'
+import eslintConfigPrettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import eslintConfigVueTs from '@vue/eslint-config-typescript'
 // @ts-expect-error https://github.com/import-js/eslint-plugin-import/issues/3090
 import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginJs from '@eslint/js'
 import eslintPluginStylistic from '@stylistic/eslint-plugin'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import eslintPluginVitest from '@vitest/eslint-plugin'
-// import eslintPluginVue from 'eslint-plugin-vue'
+import eslintPluginVue from 'eslint-plugin-vue'
 import eslintPluginX from '@txe/eslint-plugin-x'
 import * as eslintToolingTs from 'typescript-eslint'
 import globals from 'globals'
 
 export default eslintToolingTs.config(
   {
-    files: ['*'],
-    languageOptions: {
-      globals: globals.node,
-    },
+    name: 'package/files-to-lint',
+    files: ['**/*.{ts,vue}'],
+  },
+
+  {
+    name: 'package/files-to-ignore',
+    ignores: ['**/dist/**', '**/coverage/**'],
   },
 
   eslintPluginJs.configs.recommended,
@@ -48,11 +50,14 @@ export default eslintToolingTs.config(
       },
     },
     rules: {
-      'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
-      'import/first': 'error',
       'import/no-duplicates': 'off',
+      'import/no-unresolved': 'off',
+
+      'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
       'import/no-empty-named-blocks': 'warn',
       'import/newline-after-import': 'warn',
+
+      'import/first': 'error',
       'import/no-extraneous-dependencies': [
         'error',
         { devDependencies: ['*', 'src/**/*.spec.*'] },
@@ -96,48 +101,14 @@ export default eslintToolingTs.config(
     },
   },
 
-  {
-    files: ['src/**/*.types.ts'],
-    plugins: {
-      // https://github.com/eslint-stylistic/eslint-stylistic/issues/398
-      '@stylistic': eslintPluginStylistic,
-    },
-    rules: {
-      '@stylistic/indent': ['warn'],
-      '@stylistic/member-delimiter-style': [
-        'warn',
-        {
-          singleline: {
-            delimiter: 'comma',
-            requireLast: false,
-          },
-          multiline: {
-            delimiter: 'comma',
-            requireLast: true,
-          },
-        },
-      ],
-    },
-  },
-
-  {
-    files: ['src/**/*.spec.*'],
-    ...eslintPluginVitest.configs.recommended,
-  },
-
-  eslintConfigPrettier,
   ...eslintPluginX.configs.recommended,
-
-  // {
-  //   files: ['**/*.vue'],
-  //   extends: [
-  //     ...eslintPluginVue.configs['flat/recommended'],
-  //     ...eslintConfigVueTs(),
-  //     eslintConfigPrettierSkipFormatting,
-  //   ],
-  // },
+  ...eslintPluginVue.configs['flat/essential'],
+  ...eslintConfigVueTs(),
 
   {
-    ignores: ['dist/', 'coverage/'],
+    ...eslintPluginVitest.configs.recommended,
+    files: ['src/**/*.spec.*', 'src/testing/**/*'],
   },
+
+  eslintConfigPrettierSkipFormatting,
 )
