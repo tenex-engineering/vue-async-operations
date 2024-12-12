@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import type { OperationState } from '../state'
+import type { OperationState } from '#package/state'
 
 const { operation } = defineProps<{
   operation: OperationState<unknown>
 }>()
-
-function isError(value: unknown): value is Error {
-  return value instanceof Error
-}
 </script>
 
 <template>
@@ -28,7 +24,7 @@ function isError(value: unknown): value is Error {
       <template v-else-if="operation.isRejected">
         <div>rejected</div>
 
-        <template v-if="isError(operation.error)">
+        <template v-if="(operation.error instanceof Error)">
           <div>{{ operation.error.message }}</div>
         </template>
       </template>

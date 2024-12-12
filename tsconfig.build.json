@@ -4,10 +4,12 @@
   "exclude": ["./src/**/*.spec.*", "./src/testing/**/*"],
 
   "compilerOptions": {
+    "paths": {
+      "#package/*": ["./src/*"]
+    },
+
     "rootDir": "./src/",
     "outDir": "./dist/",
-
-    "declaration": true,
 
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
 

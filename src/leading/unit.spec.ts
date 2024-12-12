@@ -1,8 +1,8 @@
-import { createDeferredPromise } from './testing/deferred-promise.js'
+import { createDeferredPromise } from '#package/testing/deferred-promise.js'
 import { expect } from 'vitest'
-import { LeadingOperationError } from './leading.js'
+import { LeadingOperationError } from './index.js'
 import { test } from 'vitest'
-import { useLeadingOperation } from './leading.js'
+import { useLeadingOperation } from './index.js'
 
 test('initial', async () => {
   const [, submission] = useLeadingOperation(async () => {

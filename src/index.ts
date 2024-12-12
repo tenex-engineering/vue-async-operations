@@ -1,3 +1,3 @@
-export { LeadingOperationError } from './leading.js'
-export { useLeadingOperation } from './leading.js'
-export { useTrailingOperation } from './trailing.js'
+export { LeadingOperationError } from './leading/index.js'
+export { useLeadingOperation } from './leading/index.js'
+export { useTrailingOperation } from './trailing/index.js'

@@ -1,9 +1,9 @@
-import { createDeferredPromise } from './testing/deferred-promise.js'
+import { createDeferredPromise } from '#package/testing/deferred-promise.js'
 import { expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { test } from 'vitest'
-import TestBench from './fixtures/TestBench.vue'
-import { useLeadingOperation } from './leading.js'
+import TestBench from '#package/fixtures/TestBench.vue'
+import { useLeadingOperation } from './index.js'
 
 const selector = '[data-testid=operation]'
 

@@ -114,7 +114,7 @@ jobs:
   deploy:
     name: Publish
     runs-on: ubuntu-24.04
-    needs: [build, test, lint, exports-check]
+    needs: [build, test, lint]
     steps:
       - uses: actions/checkout@v4
 

@@ -1,6 +1,6 @@
-import { createDefaultState } from './state.js'
-import type { OperationState } from './state.js'
-import { publishState } from './state.js'
+import { createDefaultState } from '#package/state.js'
+import type { OperationState } from '#package/state.js'
+import { publishState } from '#package/state.js'
 
 /**
  * Creates a utility for managing asynchronous operations where only the first invocation

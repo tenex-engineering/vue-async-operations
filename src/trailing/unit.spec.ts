@@ -1,7 +1,7 @@
 import { expect } from 'vitest'
 import { test } from 'vitest'
-import { useDeferredPromise } from './testing/deferred-promise.js'
-import { useTrailingOperation } from './trailing.js'
+import { useDeferredPromise } from '#package/testing/deferred-promise.js'
+import { useTrailingOperation } from './index.js'
 
 test('initial', async () => {
   const [, operation] = useTrailingOperation(async () => {
