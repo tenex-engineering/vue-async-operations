@@ -8,10 +8,10 @@ Available as `@txe/vue-async-operations` via your preferred Node.js package mana
 
 ## Features
 
-| Function                                       | Description                                                     |
-| ---------------------------------------------- | --------------------------------------------------------------- |
-| [useLeadingOperation](src/leading/README.md)   | Prevents new async operations while one is already in progress. |
-| [useTrailingOperation](src/trailing/README.md) | Ignores previous async operations and tracks only the latest.   |
+| Function                                                                                                            | Description                                                     |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [useLeadingOperation](https://github.com/tenex-engineering/vue-async-operations/blob/master/src/leading/README.md)  | Prevents new async operations while one is already in progress. |
+| [useTrailingOperation](https://github.com/tenex-engineering/vue-async-operations/blob/master/src/leading/README.md) | Ignores previous async operations and tracks only the latest.   |
 
 ## Example
 
