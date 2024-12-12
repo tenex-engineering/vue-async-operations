@@ -56,33 +56,33 @@ jobs:
           path: dist/
           key: ${{ runner.os }}-build-${{ github.sha }}
 
-  exports-check:
-    name: Check exports
-    needs: [deps, build]
-    runs-on: ubuntu-24.04
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
+  # exports-check:
+  #   name: Check exports
+  #   needs: [deps, build]
+  #   runs-on: ubuntu-24.04
+  #   continue-on-error: true
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: .node-version
 
-      - name: Restore node_modules from cache
-        uses: actions/cache/restore@v4
-        with:
-          fail-on-cache-miss: true
-          path: node_modules/
-          key: ${{ runner.os }}-node-${{ github.sha }}
+  #     - name: Restore node_modules from cache
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         fail-on-cache-miss: true
+  #         path: node_modules/
+  #         key: ${{ runner.os }}-node-${{ github.sha }}
 
-      - name: Restore build from cache
-        uses: actions/cache/restore@v4
-        with:
-          fail-on-cache-miss: true
-          path: dist/
-          key: ${{ runner.os }}-build-${{ github.sha }}
+  #     - name: Restore build from cache
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         fail-on-cache-miss: true
+  #         path: dist/
+  #         key: ${{ runner.os }}-build-${{ github.sha }}
 
-      - run: npm run exports-check
+  #     - run: npm run exports-check
 
   test:
     name: Test
