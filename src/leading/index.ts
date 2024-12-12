@@ -17,6 +17,7 @@ import { publishState } from '#package/state.js'
  * @throws {LeadingOperationError} If the operation is invoked while the previous invocation is still pending.
  *
  * @example
+ * ```js
  * import { useLeadingOperation } from '@txe/vue-async-operations'
  *
  * const [submit, submission] = useLeadingOperation(async ({ title, body }) => {
@@ -32,6 +33,7 @@ import { publishState } from '#package/state.js'
  *
  *   return data
  * })
+ * ```
  *
  * @see {@link https://github.com/tenex-engineering/vue-async-operations/blob/HEAD/src/leading/README.md}
  */

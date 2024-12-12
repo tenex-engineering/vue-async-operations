@@ -14,6 +14,7 @@ import { publishState } from '#package/state.js'
  * - A state object reflecting the most recent invocation's status, result, and error.
  *
  * @example
+ * ```js
  * import { useTrailingOperation } from '@txe/vue-async-operations'
  *
  * let abortController: AbortController | undefined
@@ -35,6 +36,7 @@ import { publishState } from '#package/state.js'
  *     return data
  *   },
  * )
+ * ```
  *
  * @see {@link https://github.com/tenex-engineering/vue-async-operations/blob/HEAD/src/trailing/README.md}
  */
