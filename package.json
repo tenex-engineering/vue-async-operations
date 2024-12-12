@@ -1,6 +1,6 @@
 {
   "name": "@txe/vue-async-operations",
-  "version": "2.2.2",
+  "version": "2.3.2",
   "scripts": {
     "ci": "npm run build && npm run test && npm run lint && npm run format-check && npm run spelling-check",
     "dev": "concurrently --names=\"tsc,test\" --prefix-colors=\"cyan,green\" \"npm run type-check--watch\" \"npm run test--watch\"",
