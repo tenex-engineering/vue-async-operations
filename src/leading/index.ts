@@ -32,6 +32,8 @@ import { publishState } from '#package/state.js'
  *
  *   return data
  * })
+ *
+ * @see {@link https://github.com/tenex-engineering/vue-async-operations/blob/HEAD/src/leading/README.md}
  */
 export function useLeadingOperation<
   F extends (...args: never[]) => Promise<T>,

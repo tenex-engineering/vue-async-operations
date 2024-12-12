@@ -35,6 +35,8 @@ import { publishState } from '#package/state.js'
  *     return data
  *   },
  * )
+ *
+ * @see {@link https://github.com/tenex-engineering/vue-async-operations/blob/HEAD/src/trailing/README.md}
  */
 export function useTrailingOperation<
   F extends (...args: never[]) => Promise<T>,
