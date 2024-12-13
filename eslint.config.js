@@ -109,7 +109,7 @@ export default eslintToolingTs.config(
 
   {
     ...eslintPluginVitest.configs.recommended,
-    files: ['src/**/*.spec.*', 'src/testing/**/*'],
+    files: ['src/**/*.spec.*'],
   },
 
   eslintConfigPrettierSkipFormatting,

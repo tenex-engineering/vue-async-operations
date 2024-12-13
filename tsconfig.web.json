@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "include": ["./src/**/*", "./src/**/*.vue"],
-  "exclude": ["./src/**/*.spec.*", "./src/testing/**/*"],
+  "exclude": ["./src/**/*.spec.*"],
 
   "compilerOptions": {
     "paths": {
