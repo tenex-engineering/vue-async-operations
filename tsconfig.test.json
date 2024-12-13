@@ -6,6 +6,8 @@
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
 
+    // https://github.com/vuejs/language-tools/issues/4484
+    // https://github.com/microsoft/TypeScript/issues/60050
     "lib": ["ESNext"],
 
     "types": ["node", "jsdom"]
