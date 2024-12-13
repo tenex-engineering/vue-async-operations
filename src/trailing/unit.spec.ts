@@ -4,7 +4,7 @@ import { useTrailingOperation } from './index.js'
 
 test('initial', async () => {
   const [, operation] = useTrailingOperation(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
   })
 
   expect(operation.result).toBe(undefined)
@@ -39,7 +39,7 @@ test('pending', async () => {
 
 test('fulfilled', async () => {
   const [query, operation] = useTrailingOperation(async (name: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
 
     return `hello, ${name}!`
   })
@@ -57,7 +57,7 @@ test('fulfilled', async () => {
 
 test('rejected', async () => {
   const [query, operation] = useTrailingOperation(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
 
     throw Error('deliberately')
   })

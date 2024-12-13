@@ -8,7 +8,7 @@ const selector = '[data-testid=operation]'
 
 test('initial', async () => {
   const [, submission] = useTrailingOperation(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
   })
 
   const wrapper = mount(TestBench, {
@@ -44,7 +44,7 @@ test('pending', async () => {
 
 test('fulfilled', async () => {
   const [submit, submission] = useTrailingOperation(async (name: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
 
     return `hello, ${name}!`
   })
@@ -64,7 +64,7 @@ test('fulfilled', async () => {
 
 test('rejected', async () => {
   const [submit, submission] = useTrailingOperation(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    await new Promise<void>((resolve) => queueMicrotask(resolve))
 
     throw Error('deliberately')
   })
