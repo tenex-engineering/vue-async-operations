@@ -1,4 +1,3 @@
-import { createDeferredPromise } from '#package/testing/deferred-promise.js'
 import { expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { test } from 'vitest'
@@ -22,7 +21,7 @@ test('initial', async () => {
 })
 
 test('pending', async () => {
-  const deferred = createDeferredPromise()
+  const deferred = Promise.withResolvers<void>()
 
   const [submit, submission] = useTrailingOperation(async () => {
     await deferred.promise

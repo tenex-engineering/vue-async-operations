@@ -37,6 +37,7 @@ export default eslintToolingTs.config(
   ...eslintToolingTs.configs.stylistic,
   {
     rules: {
+      '@typescript-eslint/no-invalid-void-type': 'off',
       '@typescript-eslint/parameter-properties': 'warn',
     },
   },

@@ -1,6 +1,5 @@
 import { expect } from 'vitest'
 import { test } from 'vitest'
-import { useDeferredPromise } from '#package/testing/deferred-promise.js'
 import { useTrailingOperation } from './index.js'
 
 test('initial', async () => {
@@ -18,10 +17,10 @@ test('initial', async () => {
 })
 
 test('pending', async () => {
-  const [deferred, resolve] = useDeferredPromise()
+  const deferred = Promise.withResolvers<void>()
 
   const [query, operation] = useTrailingOperation(async () => {
-    await deferred
+    await deferred.promise
   })
 
   const promise = query()
@@ -34,7 +33,7 @@ test('pending', async () => {
   expect(operation.isRejected).toBe(false)
   expect(operation.isSettled).toBe(false)
 
-  resolve()
+  deferred.resolve()
   await promise
 })
 
@@ -77,7 +76,7 @@ test('rejected', async () => {
 })
 
 test('concurrent', async () => {
-  const [deferred, resolve] = useDeferredPromise()
+  const deferred = Promise.withResolvers<void>()
 
   const [query, operation] = useTrailingOperation(
     async (name: string, fn?: () => Promise<void>) => {
@@ -88,10 +87,10 @@ test('concurrent', async () => {
   )
 
   query('friend', async () => {
-    await deferred
+    await deferred.promise
   })
   await query('buddy')
-  resolve()
+  deferred.resolve()
 
   expect(operation.result).toBe('hello, buddy!')
 })

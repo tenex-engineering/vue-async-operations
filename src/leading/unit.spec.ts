@@ -1,4 +1,3 @@
-import { createDeferredPromise } from '#package/testing/deferred-promise.js'
 import { expect } from 'vitest'
 import { LeadingOperationError } from './index.js'
 import { test } from 'vitest'
@@ -19,7 +18,7 @@ test('initial', async () => {
 })
 
 test('pending', async () => {
-  const deferred = createDeferredPromise()
+  const deferred = Promise.withResolvers<void>()
 
   const [submit, submission] = useLeadingOperation(async () => {
     await deferred.promise
@@ -78,7 +77,7 @@ test('rejected', async () => {
 })
 
 test('concurrent', async () => {
-  const deferred = createDeferredPromise()
+  const deferred = Promise.withResolvers<void>()
 
   const [submit, submission] = useLeadingOperation(async (name: string) => {
     await deferred.promise
