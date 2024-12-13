@@ -37,6 +37,7 @@ export default eslintToolingTs.config(
   ...eslintToolingTs.configs.stylistic,
   {
     rules: {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8113
       '@typescript-eslint/no-invalid-void-type': 'off',
       '@typescript-eslint/parameter-properties': 'warn',
     },
@@ -90,8 +91,11 @@ export default eslintToolingTs.config(
       '@stylistic': eslintPluginStylistic,
     },
     rules: {
+      // conflicts with prettier
       '@stylistic/indent': ['off'],
       '@stylistic/indent-binary-ops': ['off'],
+      //
+
       '@stylistic/padding-line-between-statements': [
         'warn',
         { blankLine: 'never', prev: 'import', next: 'import' },
