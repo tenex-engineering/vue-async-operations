@@ -52,6 +52,7 @@ export default eslintToolingTs.config(
     },
     rules: {
       'import/no-duplicates': 'off',
+      // https://github.com/import-js/eslint-plugin-import/issues/3076
       'import/no-unresolved': 'off',
 
       'import/consistent-type-specifier-style': ['warn', 'prefer-top-level'],
