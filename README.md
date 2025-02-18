@@ -17,27 +17,27 @@ Available as `@txe/vue-async-operations` via your preferred Node.js package mana
 
 [Try in StackBlitz!](https://stackblitz.com/edit/vitejs-vite-camb7nef?file=src%2FApp.vue)
 
-```html
+```vue
 <script setup>
-  import { useTrailingOperation } from '@txe/vue-async-operations'
+import { useTrailingOperation } from '@txe/vue-async-operations'
 
-  let abortController = new AbortController()
+let abortController = new AbortController()
 
-  const [search, searchOperation] = useTrailingOperation(async (query) => {
-    abortController.abort('replaced')
-    abortController = new AbortController()
+const [search, searchOperation] = useTrailingOperation(async (query) => {
+  abortController.abort('replaced')
+  abortController = new AbortController()
 
-    const params = new URLSearchParams({ query, tags: 'story' })
+  const params = new URLSearchParams({ query, tags: 'story' })
 
-    const response = await fetch(
-      `https://hn.algolia.com/api/v1/search?${params}`,
-      { signal: abortController.signal },
-    )
+  const response = await fetch(
+    `https://hn.algolia.com/api/v1/search?${params}`,
+    { signal: abortController.signal },
+  )
 
-    const data = await response.json()
+  const data = await response.json()
 
-    return data
-  })
+  return data
+})
 </script>
 
 <template>
