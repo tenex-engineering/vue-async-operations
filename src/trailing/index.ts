@@ -17,25 +17,23 @@ import { publishState } from '#package/state.js'
  * ```js
  * import { useTrailingOperation } from '@txe/vue-async-operations'
  *
- * let abortController: AbortController | undefined
+ * let abortController = new AbortController()
  *
- * const [search, searchOperation] = useTrailingOperation(
- *   async ({ query }: { query: string }) => {
- *     abortController?.abort()
- *     abortController = new AbortController()
+ * const [search, searchOperation] = useTrailingOperation(async (query) => {
+ *   abortController.abort('replaced')
+ *   abortController = new AbortController()
  *
- *     const params = new URLSearchParams({ query, tags: 'story' })
+ *   const params = new URLSearchParams({ query, tags: 'story' })
  *
- *     const response = await fetch(
- *       `http://hn.algolia.com/api/v1/search?${params}`,
- *       { signal: abortController.signal },
- *     )
+ *   const response = await fetch(
+ *     `https://hn.algolia.com/api/v1/search?${params}`,
+ *     { signal: abortController.signal },
+ *   )
  *
- *     const data = await response.json()
+ *   const data = await response.json()
  *
- *     return data
- *   },
- * )
+ *   return data
+ * })
  * ```
  *
  * @see {@link https://github.com/tenex-engineering/vue-async-operations/blob/HEAD/src/trailing/README.md}

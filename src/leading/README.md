@@ -4,10 +4,10 @@ Creates a utility for managing asynchronous operations where only the first invo
 
 ## Example
 
-```html
+```vue
 <script setup lang="ts">
-import { reactive } from 'vue'
 import { useLeadingOperation } from '@txe/vue-async-operations'
+import { reactive } from 'vue'
 
 const form = reactive({
   text: '',
