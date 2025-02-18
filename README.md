@@ -15,75 +15,53 @@ Available as `@txe/vue-async-operations` via your preferred Node.js package mana
 
 ## Example
 
+[Try in StackBlitz!](https://stackblitz.com/edit/vitejs-vite-camb7nef?file=src%2FApp.vue)
+
 ```html
-<script setup lang="ts">
-import { reactive, watch } from 'vue'
-import { useTrailingOperation } from '@txe/vue-async-operations'
+<script setup>
+  import { useTrailingOperation } from '@txe/vue-async-operations'
 
-const form = reactive({
-  query: '',
-})
+  let abortController = new AbortController()
 
-let abortController: AbortController | undefined
-
-const [search, searchOperation] = useTrailingOperation(
-  async ({ query }: { query: string }) => {
-    abortController?.abort()
+  const [search, searchOperation] = useTrailingOperation(async (query) => {
+    abortController.abort('replaced')
     abortController = new AbortController()
 
     const params = new URLSearchParams({ query, tags: 'story' })
 
     const response = await fetch(
-      `http://hn.algolia.com/api/v1/search?${params}`,
+      `https://hn.algolia.com/api/v1/search?${params}`,
       { signal: abortController.signal },
     )
 
     const data = await response.json()
 
     return data
-  },
-)
-
-watch(
-  () => form.query,
-  async (query) => {
-    if (query === '') {
-      return
-    }
-
-    await search({ query }).catch((error) => {
-      if (error instanceof DOMException && error.name === 'AbortError') {
-        return
-      }
-
-      throw error
-    })
-  },
-)
+  })
 </script>
 
 <template>
-  <div>
-    <form @submit.prevent>
-      <input
-        v-model="form.query"
-        type="text"
-        placeholder="Search HN stories..."
-      />
-    </form>
+  <form @submit.prevent>
+    <input
+      @input="(event) => search(event.target.value)"
+      type="text"
+      placeholder="Search HN stories..."
+    />
+  </form>
 
-    <template v-if="searchOperation.isPending">
-      <div>Searching...</div>
-    </template>
-    <template v-else-if="searchOperation.isFulfilled">
-      <div v-for="hit of searchOperation.result.hits" :key="hit.objectID">
-        <a
-          :href="hit.url"
-          target="_blank"
-          v-html="hit._highlightResult.title?.value"
-        ></a>
-      </div>
-    </template>
-  </div>
+  <template v-if="searchOperation.isPending">
+    <div>Searching...</div>
+  </template>
+  <template v-else-if="searchOperation.isFulfilled">
+    <div v-for="hit of searchOperation.result.hits" :key="hit.objectID">
+      <a
+        target="_blank"
+        :href="
+          hit.url ?? `https://news.ycombinator.com/item?id=${hit.objectID}`
+        "
+        v-html="hit._highlightResult.title?.value"
+      ></a>
+    </div>
+  </template>
 </template>
 ```
